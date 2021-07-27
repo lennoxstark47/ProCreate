@@ -24,16 +24,25 @@ export default class Login extends Component {
 
 	handleSubmit = (event) => {
 		event.preventDefault();
-		const { email, password } = this.state;
+
 		const newLogin = {
-			email,
-			password,
+			email: this.state.email,
+			password: this.state.password,
 		};
-		console.log(newLogin);
-		// this.setState({
-		// 	email: '',
-		// 	password: '',
-		// });
+		axios
+			.post(
+				'http://localhost:5000/login',
+				newLogin
+			)
+			.then((res) => {
+				window.location =
+					'/users/' + res.data._id;
+			})
+			.catch((err) => console.log(err));
+		this.setState({
+			email: '',
+			password: '',
+		});
 	};
 
 	render() {
@@ -42,33 +51,39 @@ export default class Login extends Component {
 				className='container'
 				style={{ width: '400px' }}>
 				<div style={{ marginTop: '200px' }}>
-					<form>
-						<div class='mb-3'>
-							<label htmlFor='Email' class='form-label'>
+					<form onSubmit={this.handleSubmit}>
+						<div className='mb-3'>
+							<label
+								htmlFor='Email'
+								className='form-label'>
 								Email address
 							</label>
 							<input
 								value={this.state.email}
 								onChange={this.onChangeEmail}
 								type='email'
-								class='form-control'
+								className='form-control'
 								id='Email'
 								aria-describedby='emailHelp'
 							/>
-							<div id='emailHelp' class='form-text'>
-								We'll never share your email with anyone
-								else.
+							<div
+								id='emailHelp'
+								className='form-text'>
+								We'll never share your email with
+								anyone else.
 							</div>
 						</div>
-						<div class='mb-3'>
+						<div className='mb-3'>
 							<label
 								htmlFor='Password'
-								class='form-label'>
+								className='form-label'>
 								Password
 							</label>
 							<input
+								value={this.state.password}
+								onChange={this.onChangePassword}
 								type='password'
-								class='form-control'
+								className='form-control'
 								id='Password'
 							/>
 						</div>
@@ -78,7 +93,7 @@ export default class Login extends Component {
 						</div>
 						<button
 							type='submit'
-							class='btn btn-primary'>
+							className='btn btn-primary'>
 							Submit
 						</button>
 					</form>
